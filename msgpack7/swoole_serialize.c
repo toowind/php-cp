@@ -62,7 +62,7 @@ static CPINLINE void swoole_check_size(seriaString *str, size_t len)
     //    int new_size = len + str->offset + 3 + sizeof (zend_ulong); //space 1 for the type and 2 for key string len or index len and(zend_ulong) for key h
     if (str->total < new_size)
     {//extend it
-        
+
         //double size
         new_size = ZEND_MM_ALIGNED_SIZE(new_size + new_size);
         str->buffer = erealloc2(str->buffer, new_size, str->offset);
@@ -204,19 +204,19 @@ static void* swoole_unserialize_arr(void *buffer, zval *zvalue, uint32_t nNumOfE
 
     GC_REFCOUNT(ht) = 1;
     GC_TYPE_INFO(ht) = IS_ARRAY;
-    if (ht->nNumUsed)
+    //    if (ht->nNumUsed)
+    //    {
+    //    void *arData = ecalloc(1, len);
+    HT_SET_DATA_ADDR(ht, emalloc(HT_SIZE(ht)));
+    ht->u.flags |= HASH_FLAG_INITIALIZED;
+    int ht_hash_size = HT_HASH_SIZE((ht)->nTableMask);
+    if (ht_hash_size <= 0)
     {
-        //    void *arData = ecalloc(1, len);
-        HT_SET_DATA_ADDR(ht, emalloc(HT_SIZE(ht)));
-        ht->u.flags |= HASH_FLAG_INITIALIZED;
-        int ht_hash_size = HT_HASH_SIZE((ht)->nTableMask);
-        if (ht_hash_size <= 0)
-        {
-            php_error_docref(NULL TSRMLS_CC, E_NOTICE, "illegal unserialize data");
-            return NULL;
-        }
-        HT_HASH_RESET(ht);
+        php_error_docref(NULL TSRMLS_CC, E_NOTICE, "illegal unserialize data");
+        return NULL;
     }
+    HT_HASH_RESET(ht);
+    //    }
 
 
     int idx;
@@ -768,30 +768,30 @@ static void* swoole_unserialize_object(void *buffer, zval *return_value, zend_uc
 
     if (ce->constructor)
     {
-//        zend_fcall_info fci = {0};
-//        zend_fcall_info_cache fcc = {0};
-//        fci.size = sizeof (zend_fcall_info);
-//        zval retval;
-//        ZVAL_UNDEF(&fci.function_name);
-//        fci.retval = &retval;
-//        fci.param_count = 0;
-//        fci.params = NULL;
-//        fci.no_separation = 1;
-//        fci.object = Z_OBJ_P(return_value);
-//
-//        zend_fcall_info_args_ex(&fci, ce->constructor, args);
-//
-//        fcc.initialized = 1;
-//        fcc.function_handler = ce->constructor;
-//        //        fcc.calling_scope = EG(scope);
-//        fcc.called_scope = Z_OBJCE_P(return_value);
-//        fcc.object = Z_OBJ_P(return_value);
-//
-//        if (zend_call_function(&fci, &fcc) == FAILURE)
-//        {
-//            zend_throw_exception_ex(NULL, 0, "could not call class constructor");
-//        }
-//        zend_fcall_info_args_clear(&fci, 1);
+        //        zend_fcall_info fci = {0};
+        //        zend_fcall_info_cache fcc = {0};
+        //        fci.size = sizeof (zend_fcall_info);
+        //        zval retval;
+        //        ZVAL_UNDEF(&fci.function_name);
+        //        fci.retval = &retval;
+        //        fci.param_count = 0;
+        //        fci.params = NULL;
+        //        fci.no_separation = 1;
+        //        fci.object = Z_OBJ_P(return_value);
+        //
+        //        zend_fcall_info_args_ex(&fci, ce->constructor, args);
+        //
+        //        fcc.initialized = 1;
+        //        fcc.function_handler = ce->constructor;
+        //        //        fcc.calling_scope = EG(scope);
+        //        fcc.called_scope = Z_OBJCE_P(return_value);
+        //        fcc.object = Z_OBJ_P(return_value);
+        //
+        //        if (zend_call_function(&fci, &fcc) == FAILURE)
+        //        {
+        //            zend_throw_exception_ex(NULL, 0, "could not call class constructor");
+        //        }
+        //        zend_fcall_info_args_clear(&fci, 1);
     }
 
 
