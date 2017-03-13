@@ -1,6 +1,6 @@
 [common]
 ;log文件
-log_file = /var/log/php-connection-pool/server.log
+log_file = /tmp/php_cp_server.log
 ;the num of TCP connections release every idel_time cycles(连接空闲后的回收力度，值越大回收的越快，但是会造成更多的消耗)
 recycle_num = 2
 ;In this period of time,if no process use this connection ,the TCP connection will release(空闲连接回收的发呆时间 单位秒)
