@@ -241,7 +241,7 @@ PHP_MINIT_FUNCTION(connect_pool)
 
     INIT_CLASS_ENTRY(redis_connect_pool_ce, "redisProxy", redis_connect_pool_methods);
     redis_connect_pool_class_entry_ptr = zend_register_internal_class(&redis_connect_pool_ce TSRMLS_CC);
-    zend_register_class_alias("redis_connect_pool", pdo_connect_pool_class_entry_ptr);
+    zend_register_class_alias("redis_connect_pool", redis_connect_pool_class_entry_ptr);
 
     INIT_CLASS_ENTRY(pdo_connect_pool_PDOStatement_ce, "pdo_connect_pool_PDOStatement", pdo_connect_pool_PDOStatement_methods);
 
