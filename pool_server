@@ -13,11 +13,11 @@ $exit_code_ok = 0;
 $exit_code_general = 1;
 $exit_code_invoke = 126;
 
-if (empty($argv[1])) {
+$cmd = $argv[1];
+if (empty($cmd)) {
     echo $usage;
     exit($exit_code_general);
 }
-$cmd = $argv[1];
 
 if (is_readable($config_file) === false) {
     echo "Can NOT read config file, 请复制config.ini.example到{$config_file}路径下" . PHP_EOL;
